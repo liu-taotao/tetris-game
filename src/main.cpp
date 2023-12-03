@@ -8,6 +8,7 @@
  *              Block 表示方块
  *              Tetris 表示方块游戏
  *        5、设计各个模块的主要接口
+ *        6、启动游戏
  * @version 0.1
  * @date 2023-12-03
  * 
@@ -15,4 +16,10 @@
  * 
  */
 
+#include "Tetris.h"
+#include "Block.h"
 
+int main(void)
+{
+    Tetris game(20, 10, );
+}
