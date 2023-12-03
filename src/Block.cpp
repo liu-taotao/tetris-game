@@ -8,7 +8,7 @@ Block::Block()
 {
     if (imgs[0] == NULL) {
         IMAGE imgTmp;
-        loadimage(&imgTmp, "/img/tiles.png");
+        loadimage(&imgTmp, "../img/tiles.png");
 
         SetWorkingImage(&imgTmp);
         for (int i = 0; i < 7; i++) {
