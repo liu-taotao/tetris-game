@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <graphics.h>
+#include "Block.h"
 using namespace std;
 class Tetris
 {
@@ -27,6 +28,8 @@ class Tetris
         int blockSize;
         IMAGE imgBg;
         
+        Block *curBlock;
+        Block *nextBlock;//预告方块
 
         void keyEven();    
         void updateWindow();   
