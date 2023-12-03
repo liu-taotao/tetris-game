@@ -20,11 +20,59 @@ Tetris::Tetris(int rows, int cols, int left, int top, int blockSize)
 //初始化
 void Tetris::init()
 {
-
+    delay = 30;
 }
 
 //开始游戏
 void Tetris::play()
 {
+    init();
+
+    int timer = 0;
+    while(1) {
+        //接收用户输入
+        keyEven();
+
+        timer += getDelay();
+        if (timer > delay) {
+            timer = 0;
+            //方块往下动 下降
+            drop();
+            //渲染游戏画面
+            update = true;
+        }
+
+        if (update) {
+            update = false;
+            //更新游戏的画面
+            updateWindow();
+
+            //更新游戏数据
+            clearLine();
+        }
+
+    }
+}
+
+void Tetris::keyEven()
+{
 
 }
+
+void Tetris::updateWindow()
+{
+
+}
+
+int Tetris::getDelay()
+{
+
+}
+void Tetris::drop()
+{
+
+}
+ void Tetris::clearLine()
+ {
+
+ }
