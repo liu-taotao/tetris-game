@@ -14,12 +14,17 @@
  * 
  * @copyright Copyright (c) 2023
  * 
- */
+ */ 
 
+#include <iostream>
 #include "Tetris.h"
 #include "Block.h"
 
+using namespace std;
 int main(void)
 {
-    Tetris game(20, 10, );
+    
+    Tetris game(20, 10, 163, 133, 36);
+    game.play();
+    return 0;
 }
