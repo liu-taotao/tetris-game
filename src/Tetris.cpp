@@ -1,4 +1,6 @@
 #include "Tetris.h"
+#include <time.h>
+#include <stdlib.h>
 /**
  * @brief Construct a new Tetris:: Tetris object
  * 
@@ -10,17 +12,16 @@
  */
 Tetris::Tetris(int rows, int cols, int left, int top, int blockSize)
 {
-    rows = 10;
-    cols = 10;
-    left = 10;
-    top = 10;
-    blockSize = 10;
+
 }
 
 //初始化
 void Tetris::init()
 {
     delay = 30;
+
+    //配置随机种子
+    srand(time(NULL));
 }
 
 //开始游戏
@@ -72,7 +73,8 @@ void Tetris::drop()
 {
 
 }
- void Tetris::clearLine()
- {
 
- }
+void Tetris::clearLine()
+{
+
+}
