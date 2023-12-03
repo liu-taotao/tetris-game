@@ -1,6 +1,10 @@
 # Prerequisites
 *.d
-
+*.,vscode
+*.json
+*.exe
+*.pdf
+*.out
 # Compiled Object files
 *.slo
 *.lo
