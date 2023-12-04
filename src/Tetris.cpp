@@ -16,8 +16,9 @@
  * @param top 右边界
  * @param blockSize 方块大小
  */
-
-const int SPEED_NORMAL = 500;//ms下降速度
+#define MAX_LEVEL 5
+// const int SPEED_NORMAL = 500;//ms下降速度
+const int SPEED_NORMAL[MAX_LEVEL] = {500, 300, 150, 100, 80};//ms下降速度
 const int SPEED_QUICK = 50;//
 
 Tetris::Tetris(int rows, int cols, int left, int top, int blockSize)
@@ -41,7 +42,7 @@ Tetris::Tetris(int rows, int cols, int left, int top, int blockSize)
 //初始化
 void Tetris::init()
 {
-    delay = SPEED_NORMAL;
+    delay = SPEED_NORMAL[0];
 
     //配置随机种子
     srand(time(NULL));
@@ -61,6 +62,8 @@ void Tetris::init()
     }
 
     score = 0;
+    lineCount = 0;
+    level = 1;
 }
 
 //开始游戏
@@ -207,7 +210,7 @@ void Tetris::drop()
         nextBlock = new Block;
     }
 
-    delay = SPEED_NORMAL;
+    delay = SPEED_NORMAL[level - 1];
 }
 
 void Tetris::clearLine()
@@ -240,6 +243,11 @@ void Tetris::clearLine()
         //播放音效
         mciSendString("play ../img/xiaochu1.mp3", 0, 0, 0);
         update = true;
+
+        //每一百分一个级别 0-100 第一关 101-200第二关 依次类推
+        level = (score + 99) / 100;
+
+        lineCount += lines;
     }
 }
 
@@ -286,4 +294,14 @@ void Tetris::drawScore()
     setbkmode(TRANSPARENT);//设置分数字体透明效果
     //绘制位置
     outtextxy(670, 727, scoreText);
+
+    //绘制消除行数
+    sprintf_s(scoreText, sizeof(scoreText), "%d", lineCount);
+    gettextstyle(&f);
+    int xPos = 224 - f.lfWidth * strlen(scoreText);
+    outtextxy(xPos, 817, scoreText);
+
+    //绘制当前是第几关
+    sprintf_s(scoreText, sizeof(scoreText), "%d", level);
+    outtextxy(224 - 30, 727, scoreText);
 }
