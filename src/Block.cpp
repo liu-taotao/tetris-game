@@ -59,7 +59,9 @@ void Block::drop()
 //左移右移
 void Block::moveLeftRight(int offset)
 {
-
+    for (int i = 0; i < 4; i++) {
+        smallBlocks[i].col += offset;
+    }
 }
 
 //旋转
@@ -85,7 +87,7 @@ IMAGE **Block::getImages()
     return imgs;
 }
 //赋值构造函数
-Block &Block::operator=(const Block& other)
+Block& Block::operator=(const Block& other)
 {
     if (this == &other) {
         return *this;
@@ -105,7 +107,7 @@ bool Block::blockInMap(const vector<vector<int>>&map)
         //判断是否
         if (smallBlocks[i].col < 0 || smallBlocks[i].col >= cols
             || smallBlocks[i].row < 0 || smallBlocks[i].row >= rows
-            || map[smallBlocks[i].row][smallBlocks[i].col]) {
+            || map[smallBlocks[i].row][smallBlocks[i].col] != 0) {
                 return false;
 
             }

@@ -1,6 +1,7 @@
 #include "Tetris.h"
 #include <time.h>
 #include <stdlib.h>
+#include <conio.h>
 #include "Block.h"
 /**
  * @brief Construct a new Tetris:: Tetris object
@@ -93,25 +94,69 @@ void Tetris::play()
 
 void Tetris::keyEven()
 {
+    unsigned char ch = 0;//0 - 255
+    bool rotateFlag = false;
+    int dx = 0;
+    printf("ch1 = %d\n", ch);
+    //判断以下是否有输入防止阻塞
+    if (_kbhit()) {
+        ch = _getch();
+        printf("ch1 = %d\n", ch);
+        //如果按下方向键, 会自动返回两个字符
+        //如果按下 向上方向键,会先后返回: 224 72
+        //如果按下 向下方向键,会先后返回: 224 80
+        //如果按下 向左方向键,会先后返回: 224 75
+        //如果按下 向右方向键,会先后返回: 224 77
+        if (ch == 224) {
+            ch = _getch();
+            printf("ch2 = %d\n", ch);
+            switch (ch) {
+                case 72: 
+                    rotateFlag = true;
+                    break;
+                case 80: 
+                    delay = SPEED_QUICK;
+                    break;
+                case 75: 
+                    dx = -1;
+                    break;
+                case 77: 
+                    dx = 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+    }
 
+    if (rotateFlag) {
+        //实现旋转
+    }
+   
+    if (dx != 0) {
+        //实现左右移动
+        moveLeftRight(dx);
+        update = true;
+    }
 }
 //更新窗口
 void Tetris::updateWindow()
 {
+    BeginBatchDraw();//为了使画面不闪烁，让其他都好了在渲染 一起渲染
     putimage(0, 0, &imgBg);//绘制背景图片
 
     //底部固化方块坐标
     IMAGE **imgs = Block::getImages();
-    BeginBatchDraw();//为了使画面不闪烁，让其他都好了在渲染 一起渲染
+    
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             if (map[i][j] == 0) {
                 continue;
-            } else {
-                int x = j * blockSize + leftMargin;
-                int y = i * blockSize + topMargin;
-                putimage(x, y, imgs[map[i][j] - 1]);//绘制方块
             }
+            int x = j * blockSize + leftMargin;
+            int y = i * blockSize + topMargin;
+            putimage(x, y, imgs[map[i][j] - 1]);//绘制方块
         }
     }
 
@@ -151,9 +196,21 @@ void Tetris::drop()
         curBlock = nextBlock;
         nextBlock = new Block;
     }
+
+    delay = SPEED_NORMAL;
 }
 
 void Tetris::clearLine()
 {
 
+}
+
+void Tetris::moveLeftRight(int offset)
+{
+    bakBlock = *curBlock;
+    curBlock->moveLeftRight(offset);
+
+    if (!curBlock->blockInMap(map)) {
+        *curBlock = bakBlock;
+    }
 }
