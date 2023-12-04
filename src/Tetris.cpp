@@ -47,6 +47,9 @@ Tetris::Tetris(int rows, int cols, int left, int top, int blockSize)
 //初始化
 void Tetris::init()
 {
+    //背景音乐
+    mciSendString("play ../img/bg.mp3 repeat", 0, 0, 0);
+
     delay = SPEED_NORMAL[0];
 
     //配置随机种子
@@ -58,6 +61,8 @@ void Tetris::init()
     //加载背景图片
     loadimage(&imgBg, "../img/bg2.png");
       
+    loadimage(&imgWin, "../img/win.png");
+    loadimage(&imgOver, "../img/over.png");
     //初始化游戏区中的数据
     char data[20][10];
     for (int i = 0; i < rows; i++) {
@@ -79,6 +84,8 @@ void Tetris::init()
         file >> highestScore;
     }
     file.close();//关闭文件 
+
+    gameOver = false;
 }
 
 //开始游戏
@@ -111,6 +118,19 @@ void Tetris::play()
 
             //更新游戏数据
             clearLine();
+
+            if (gameOver) {
+                //保存分数
+                saveScore();
+
+                //更新游戏结束界面
+                displayOver();
+
+                //system("pause");
+
+                init();//重新开局
+
+            }
         }
 
     }
@@ -223,6 +243,9 @@ void Tetris::drop()
         delete curBlock;
         curBlock = nextBlock;
         nextBlock = new Block;
+
+        //检查游戏是否结束
+        checkOver();
     }
 
     delay = SPEED_NORMAL[level - 1];
@@ -261,8 +284,11 @@ void Tetris::clearLine()
 
         //每一百分一个级别 0-100 第一关 101-200第二关 依次类推
         level = (score + 99) / 100;
+        if (level > MAX_LEVEL) {
+            gameOver = true;
+        }
 
-        lineCount += lines;
+        lineCount += lines;      
     }
 }
 
@@ -323,4 +349,39 @@ void Tetris::drawScore()
     //绘制最高分
     sprintf_s(scoreText, sizeof(scoreText), "%d", highestScore);
     outtextxy(670, 817, scoreText);
+}
+
+void Tetris::checkOver()
+{
+    gameOver = (curBlock->blockInMap(map) == false);
+}
+
+//保存最高分
+void Tetris::saveScore()
+{
+    if (score > highestScore) {
+        highestScore = score;
+
+        ofstream file(RECORDER_FILE);
+        file << highestScore;
+        file.close();
+    }
+}
+
+//绘制游戏结束画面
+void Tetris::displayOver()
+{
+    //结束背景音乐
+    mciSendString("stop ../img/bg.mp3", 0, 0, 0);
+
+    //胜利结束，还是失败结束
+    if (level <= MAX_LEVEL) {
+        cout << "游戏失败" << endl;
+        putimage(262, 361, &imgOver);
+        mciSendString("play ../img/over.mp3", 0, 0, 0);
+    } else {
+        cout << "游戏胜利" << endl;
+        putimage(262, 361, &imgWin);
+        mciSendString("play ../img/win.mp3", 0, 0, 0);
+    }
 }

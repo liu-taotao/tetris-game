@@ -27,6 +27,9 @@ class Tetris
         int topMargin;
         int blockSize;
         IMAGE imgBg;
+        //加载失败和胜利的图片
+        IMAGE imgOver;
+        IMAGE imgWin;
         
         Block *curBlock;
         Block *nextBlock;//预告方块
@@ -36,6 +39,7 @@ class Tetris
         int level; //当前关卡
         int lineCount; //当前已经消除了多少行
         int highestScore;//最高分
+        bool gameOver;//游戏是否已经结束
 
         void keyEven();    
         void updateWindow();   
@@ -47,5 +51,7 @@ class Tetris
         void moveLeftRight(int offset);
         void rotate();//旋转
         void drawScore();//绘制当前分数
-    
+        void checkOver();//检查游戏是否结束 
+        void saveScore();//保存最高分
+        void displayOver();  //绘制游戏结束画面 
 };

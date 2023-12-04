@@ -134,5 +134,5 @@ void Block::solidify(vector<vector<int>>&map)
 }
 int Block::getBlockType()
 {
-
+    return blockType;
 }
