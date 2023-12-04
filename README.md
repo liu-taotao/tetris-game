@@ -29,3 +29,17 @@ vscode中编译工程出现问题
 最终效果
 ------------
 
+#### 其他的后续再补充，有用的话记得点星星⭐~
+
+* 游戏进行
+
+![final](./img/final.png)
+
+* 游戏结束
+
+![final](./img/gameover.png)
+
+* 终端
+
+  ![final](./img/output.png)
+
