@@ -2,11 +2,15 @@
 #include <time.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <fstream>
+#include <iostream>
 #include "Block.h"
 
 #include <windows.h>
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
+
+using namespace std;
 /**
  * @brief Construct a new Tetris:: Tetris object
  * 
@@ -17,6 +21,7 @@
  * @param blockSize 方块大小
  */
 #define MAX_LEVEL 5
+#define RECORDER_FILE "recorder.txt"
 // const int SPEED_NORMAL = 500;//ms下降速度
 const int SPEED_NORMAL[MAX_LEVEL] = {500, 300, 150, 100, 80};//ms下降速度
 const int SPEED_QUICK = 50;//
@@ -64,6 +69,16 @@ void Tetris::init()
     score = 0;
     lineCount = 0;
     level = 1;
+
+    //初始化最高分 文件操作
+    ifstream file(RECORDER_FILE);
+    if (!file.is_open()) {
+        cout << RECORDER_FILE << "打开失败" << endl;
+        highestScore = 0;
+    } else {
+        file >> highestScore;
+    }
+    file.close();//关闭文件 
 }
 
 //开始游戏
@@ -304,4 +319,8 @@ void Tetris::drawScore()
     //绘制当前是第几关
     sprintf_s(scoreText, sizeof(scoreText), "%d", level);
     outtextxy(224 - 30, 727, scoreText);
+
+    //绘制最高分
+    sprintf_s(scoreText, sizeof(scoreText), "%d", highestScore);
+    outtextxy(670, 817, scoreText);
 }

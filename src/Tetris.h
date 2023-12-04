@@ -35,6 +35,7 @@ class Tetris
         int score; //当前分数
         int level; //当前关卡
         int lineCount; //当前已经消除了多少行
+        int highestScore;//最高分
 
         void keyEven();    
         void updateWindow();   
