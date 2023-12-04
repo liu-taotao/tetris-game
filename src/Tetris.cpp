@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <conio.h>
 #include "Block.h"
+
+#include <windows.h>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 /**
  * @brief Construct a new Tetris:: Tetris object
  * 
@@ -204,7 +208,33 @@ void Tetris::drop()
 
 void Tetris::clearLine()
 {
+    int lines = 0;
+    int k = rows - 1;//存储数据的行数
+    for (int i = rows - 1; i >= 0; i--) {
+        //检查第i行是否满行
+        int count = 0;
+        for (int j = 0; j < cols; j++) {
+            if (map[i][j]) {
+                count++;
+            }
+            map[k][j] = map[i][j];//一边扫描，一边存储
+        }
 
+        if (count < cols) {//不是满行
+            k--;
+        } else {//满行 count = cols
+            lines++;
+        }
+    }
+
+    if (lines > 0) {
+        //计算得分
+
+
+        //播放音效
+        mciSendString("play ../img/xiaochu1.mp3", 0, 0, 0);
+        update = true;
+    }
 }
 
 void Tetris::moveLeftRight(int offset)
