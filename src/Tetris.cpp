@@ -63,7 +63,7 @@ void Tetris::play()
 
     nextBlock = new Block;//预告方块
     curBlock = nextBlock;//当前方块
-    
+    nextBlock = new Block;
 
     int timer = 0;
     while(1) {
@@ -100,6 +100,25 @@ void Tetris::updateWindow()
 {
     putimage(0, 0, &imgBg);//绘制背景图片
 
+    //底部固化方块坐标
+    IMAGE **imgs = Block::getImages();
+    BeginBatchDraw();//为了使画面不闪烁，让其他都好了在渲染 一起渲染
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (map[i][j] == 0) {
+                continue;
+            } else {
+                int x = j * blockSize + leftMargin;
+                int y = i * blockSize + topMargin;
+                putimage(x, y, imgs[map[i][j] - 1]);//绘制方块
+            }
+        }
+    }
+
+    curBlock->draw(leftMargin, topMargin);//当前方块
+    nextBlock->draw(689, 150);//预告方块
+    EndBatchDraw();
+
 }
 
 int Tetris::getDelay()
@@ -118,9 +137,20 @@ int Tetris::getDelay()
 		return ret;
 	}
 }
+//下降功能
 void Tetris::drop()
 {
+    bakBlock = *curBlock;
+    curBlock->drop();
 
+    //说明方块到底了
+    if (!curBlock->blockInMap(map)) {
+        // 把方块固化
+        bakBlock.solidify(map);
+        delete curBlock;
+        curBlock = nextBlock;
+        nextBlock = new Block;
+    }
 }
 
 void Tetris::clearLine()

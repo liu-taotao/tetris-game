@@ -46,7 +46,14 @@ Block::Block()
 //下降
 void Block::drop()
 {
-
+    //小方块往下移动
+    for (int i = 0; i < 4; i++) {
+        smallBlocks[i].row++;
+    }
+    //c++11特性 替代上面 变成每个成员的引用
+    // for (auto &block : smallBlocks) {
+    //     block.row++;
+    // }
 }
 
 //左移右移
@@ -71,4 +78,48 @@ void Block::draw(int leftMargin, int topMargin)
         //绘制图像
         putimage(x, y, img);
     }
+}
+
+IMAGE **Block::getImages()
+{
+    return imgs;
+}
+//赋值构造函数
+Block &Block::operator=(const Block& other)
+{
+    if (this == &other) {
+        return *this;
+    }
+    this->blockType = other.blockType;
+    for (int i = 0; i < 4; i++) {
+        this->smallBlocks[i] = other.smallBlocks[i];
+    }
+    return *this;
+}
+
+bool Block::blockInMap(const vector<vector<int>>&map)
+{
+    int rows = map.size();
+    int cols = map[0].size();
+    for (int i = 0; i < 4; i++) {
+        //判断是否
+        if (smallBlocks[i].col < 0 || smallBlocks[i].col >= cols
+            || smallBlocks[i].row < 0 || smallBlocks[i].row >= rows
+            || map[smallBlocks[i].row][smallBlocks[i].col]) {
+                return false;
+
+            }
+            
+    }
+    return true;
+}
+
+
+void Block::solidify(vector<vector<int>>&map)
+{
+    for (int i = 0; i < 4; i++) {
+        //设置标记, 固化对应的位置
+        map[smallBlocks[i].row][smallBlocks[i].col] = blockType;
+    }
+
 }

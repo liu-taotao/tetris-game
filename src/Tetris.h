@@ -30,6 +30,7 @@ class Tetris
         
         Block *curBlock;
         Block *nextBlock;//预告方块
+        Block bakBlock;//当前方块降落过程中，用来备份上一个合法的位置的
 
         void keyEven();    
         void updateWindow();   

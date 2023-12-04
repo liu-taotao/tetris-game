@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <graphics.h>
+#include <vector>
 using namespace std;
 
 //方块的行 列
@@ -16,7 +17,14 @@ class Block
         void moveLeftRight(int offset);//左移右移
         void retate();//旋转
         void draw(int leftMargin, int topMargin);
+        static IMAGE **getImages();
+        Block &operator=(const Block& other);
 
+        bool blockInMap(const vector<vector<int>>&map);
+        //Point* getSmallBlock();
+
+        //固化函数
+        void solidify(vector<vector<int>>&map);
 
     private:
         int blockType;  
