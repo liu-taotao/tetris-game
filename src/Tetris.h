@@ -32,6 +32,10 @@ class Tetris
         Block *nextBlock;//预告方块
         Block bakBlock;//当前方块降落过程中，用来备份上一个合法的位置的
 
+        int score; //当前分数
+        int level; //当前关卡
+        int lineCount; //当前已经消除了多少行
+
         void keyEven();    
         void updateWindow();   
         //返回距离上一次调用该函数，间隔了多少秒
@@ -41,5 +45,6 @@ class Tetris
         void clearLine();
         void moveLeftRight(int offset);
         void rotate();//旋转
+        void drawScore();//绘制当前分数
     
 };

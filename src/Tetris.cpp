@@ -59,6 +59,8 @@ void Tetris::init()
             map[i][j] = 0;
         }
     }
+
+    score = 0;
 }
 
 //开始游戏
@@ -101,11 +103,10 @@ void Tetris::keyEven()
     unsigned char ch = 0;//0 - 255
     bool rotateFlag = false;
     int dx = 0;
-    printf("ch1 = %d\n", ch);
+    cout << "键值 = " << (int)ch << endl;
     //判断以下是否有输入防止阻塞
     if (_kbhit()) {
         ch = _getch();
-        printf("ch1 = %d\n", ch);
         //如果按下方向键, 会自动返回两个字符
         //如果按下 向上方向键,会先后返回: 224 72
         //如果按下 向下方向键,会先后返回: 224 80
@@ -113,7 +114,7 @@ void Tetris::keyEven()
         //如果按下 向右方向键,会先后返回: 224 77
         if (ch == 224) {
             ch = _getch();
-            printf("ch2 = %d\n", ch);
+            cout << "键值 = " << (int)ch << endl;
             switch (ch) {
                 case 72: 
                     rotateFlag = true;
@@ -168,6 +169,9 @@ void Tetris::updateWindow()
 
     curBlock->draw(leftMargin, topMargin);//当前方块
     nextBlock->draw(689, 150);//预告方块
+
+    drawScore();//绘制分数
+
     EndBatchDraw();
 
 }
@@ -229,7 +233,9 @@ void Tetris::clearLine()
 
     if (lines > 0) {
         //计算得分
-
+        int addScore[4] = {10, 30, 60, 80};
+        score += addScore[lines - 1];
+        cout << "行数是: " << lines << "分数是:" << score << endl;
 
         //播放音效
         mciSendString("play ../img/xiaochu1.mp3", 0, 0, 0);
@@ -259,4 +265,25 @@ void Tetris::rotate()
     if (!curBlock->blockInMap(map)) {
         *curBlock = bakBlock;
     }
+}
+
+void Tetris::drawScore()
+{
+    char scoreText[32];
+    sprintf_s(scoreText, sizeof(scoreText), "%d", score);
+    
+    setcolor(RGB(180, 180, 180));
+
+    //设置字体
+    LOGFONT f;
+    gettextstyle(&f);//获取当前字体
+    f.lfHeight = 60;
+    f.lfWidth = 30; 
+    f.lfQuality = ANTIALIASED_QUALITY;//抗锯齿效果  设置字体
+    strcpy_s(f.lfFaceName, sizeof(f.lfFaceName), _T("Segoe UI Black"));
+    settextstyle(&f);
+
+    setbkmode(TRANSPARENT);//设置分数字体透明效果
+    //绘制位置
+    outtextxy(670, 727, scoreText);
 }
