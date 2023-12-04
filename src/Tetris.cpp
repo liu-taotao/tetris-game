@@ -132,6 +132,8 @@ void Tetris::keyEven()
 
     if (rotateFlag) {
         //实现旋转
+        rotate();
+        update = true;
     }
    
     if (dx != 0) {
@@ -210,6 +212,20 @@ void Tetris::moveLeftRight(int offset)
     bakBlock = *curBlock;
     curBlock->moveLeftRight(offset);
 
+    if (!curBlock->blockInMap(map)) {
+        *curBlock = bakBlock;
+    }
+}
+
+void Tetris::rotate()
+{
+    if (curBlock->getBlockType() == 7) {
+        return;
+    }
+    bakBlock = *curBlock;
+    curBlock->rotate();
+
+    //判断位置是否合法
     if (!curBlock->blockInMap(map)) {
         *curBlock = bakBlock;
     }

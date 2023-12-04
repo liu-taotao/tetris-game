@@ -15,7 +15,7 @@ class Block
         Block();
         void drop();//下降
         void moveLeftRight(int offset);//左移右移
-        void retate();//旋转
+        void rotate();//旋转
         void draw(int leftMargin, int topMargin);
         static IMAGE **getImages();
         Block &operator=(const Block& other);
@@ -25,9 +25,11 @@ class Block
 
         //固化函数
         void solidify(vector<vector<int>>&map);
+        int getBlockType(); 
 
     private:
-        int blockType;  
+
+        int blockType;  //方块的类型
         Point smallBlocks[4];
         IMAGE *img;
 

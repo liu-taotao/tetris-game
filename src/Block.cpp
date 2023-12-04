@@ -65,9 +65,16 @@ void Block::moveLeftRight(int offset)
 }
 
 //旋转
-void Block::retate()
+void Block::rotate()
 {
+    Point p = smallBlocks[1];
 
+    for (int i = 0; i < 4; i++) {
+        Point tmp = smallBlocks[i];//备份要旋转的方块
+        //旋转
+        smallBlocks[i].col = p.col - tmp.row + p.row;
+        smallBlocks[i].row = p.row + tmp.col - p.col;
+    }
 }
 
 //画方块边界 绘制
@@ -123,5 +130,9 @@ void Block::solidify(vector<vector<int>>&map)
         //设置标记, 固化对应的位置
         map[smallBlocks[i].row][smallBlocks[i].col] = blockType;
     }
+
+}
+int Block::getBlockType()
+{
 
 }

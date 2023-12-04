@@ -40,6 +40,6 @@ class Tetris
         void drop();
         void clearLine();
         void moveLeftRight(int offset);
-        
+        void rotate();//旋转
     
 };
