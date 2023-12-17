@@ -127,6 +127,7 @@ void Tetris::play()
                 displayOver();
 
                 //system("pause");
+                exit(0);
 
                 //init();//重新开局
 
