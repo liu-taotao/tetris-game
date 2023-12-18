@@ -126,8 +126,8 @@ void Tetris::play()
                 //更新游戏结束界面
                 displayOver();
 
-                //system("pause");
-                exit(0);
+                system("pause");
+                //exit(0);
 
                 //init();//重新开局
 
